@@ -192,9 +192,10 @@ export async function safeGetRelatedServices(
     // fall through
   }
 
+  // Only use static demo cards when CMS has no other published services.
   return DEMO_SERVICES.filter((item) => item.slug !== service.slug)
     .slice(0, limit)
-    .map((item) => ({ ...item }))
+    .map((item) => ({ ...item, isDemo: true as const }))
 }
 
 export async function safeGetDoctors(limit = 50): Promise<{
@@ -509,17 +510,24 @@ export function asMedia(value: unknown) {
   return null
 }
 
-/** CMS media first; static /images only as fallback. */
-export function resolveServiceImage(service: {
-  slug?: unknown
-  image?: unknown
-}) {
+/** CMS media first; static /images only for explicit demo content. */
+export function resolveServiceImage(
+  service: {
+    slug?: unknown
+    image?: unknown
+    isDemo?: unknown
+  },
+  options?: { allowDemoFallback?: boolean },
+) {
+  const fromCms = asMedia(service.image)
+  if (fromCms) return fromCms
+
+  const allowDemo =
+    options?.allowDemoFallback === true || service.isDemo === true
+  if (!allowDemo) return null
+
   const slug = String(service.slug || '')
-  return (
-    asMedia(service.image) ||
-    DEMO_IMAGES.services[slug as keyof typeof DEMO_IMAGES.services] ||
-    null
-  )
+  return DEMO_IMAGES.services[slug as keyof typeof DEMO_IMAGES.services] || null
 }
 
 export function resolveDoctorPhoto(doctor: {

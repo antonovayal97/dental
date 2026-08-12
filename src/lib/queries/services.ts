@@ -67,11 +67,11 @@ async function fetchServicesByIds(
   })
 
   const byId = new Map(
-    (result.docs as unknown as ServiceDoc[]).map((doc) => [doc.id, doc]),
+    (result.docs as unknown as ServiceDoc[]).map((doc) => [String(doc.id), doc]),
   )
 
   return ids
-    .map((id) => byId.get(id))
+    .map((id) => byId.get(String(id)))
     .filter((doc): doc is ServiceDoc => Boolean(doc))
 }
 
@@ -181,6 +181,7 @@ export async function getRelatedServices(
   }
 
   const payload = await getPayloadClient()
+  const excludeId = service.id
   const categoryValue = 'category' in service ? service.category : undefined
   const categoryId =
     typeof categoryValue === 'object' &&
@@ -191,31 +192,50 @@ export async function getRelatedServices(
         ? categoryValue
         : null
 
+  const baseWhere: Where = {
+    and: [
+      publishedWhere,
+      {
+        id: {
+          not_equals: excludeId,
+        },
+      },
+    ],
+  }
+
+  // Prefer siblings from the same category when they exist.
+  if (categoryId != null) {
+    const sameCategory = await payload.find({
+      collection: 'services',
+      draft: false,
+      depth,
+      limit,
+      sort: '-createdAt',
+      where: {
+        and: [
+          ...(baseWhere.and as Where[]),
+          {
+            category: {
+              equals: categoryId,
+            },
+          },
+        ],
+      },
+    })
+
+    if (sameCategory.docs.length > 0) {
+      return sameCategory.docs as unknown as ServiceDoc[]
+    }
+  }
+
+  // Seed data maps 1 service → 1 category, so fall back to other published services.
   const result = await payload.find({
     collection: 'services',
     draft: false,
     depth,
     limit,
     sort: '-createdAt',
-    where: {
-      and: [
-        publishedWhere,
-        {
-          id: {
-            not_equals: service.id,
-          },
-        },
-        ...(categoryId
-          ? [
-              {
-                category: {
-                  equals: categoryId,
-                },
-              } satisfies Where,
-            ]
-          : []),
-      ],
-    },
+    where: baseWhere,
   })
 
   return result.docs as unknown as ServiceDoc[]
