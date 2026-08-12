@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 1.75rem;
+
+  --shadow-soft: 0 1px 2px rgb(23 23 23 / 0.04), 0 8px 24px rgb(23 23 23 / 0.04);
+  --shadow-lift: 0 4px 16px rgb(23 23 23 / 0.06), 0 12px 32px rgb(23 23 23 / 0.04);
+}
+
+:root {
+  --background: #f8f8f6;
+  --foreground: #171717;
+  --secondary: #ededea;
+  --secondary-foreground: #171717;
+  --muted: #f1f1ee;
+  --muted-foreground: #6b6b66;
+  --accent: #2f7f7a;
+  --accent-foreground: #ffffff;
+  --accent-soft: #e6f2f1;
+  --border: #e4e4e0;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --destructive: #b42318;
+  --ring: #2f7f7a;
+  --surface: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+}
+
+@layer utilities {
+  .container-site {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-display {
+    @apply text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .text-heading {
+    @apply text-2xl font-semibold tracking-tight text-foreground sm:text-3xl lg:text-4xl;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .text-subheading {
+    @apply text-xl font-semibold tracking-tight text-foreground sm:text-2xl;
+    line-height: 1.25;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed text-muted-foreground sm:text-lg;
+  }
+
+  .text-caption {
+    @apply text-sm leading-normal text-muted-foreground;
+  }
+
+  .text-label {
+    @apply text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-28;
+  }
+
+  .prose-clinic {
+    @apply max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg;
+  }
+
+  .surface-grid {
+    background-image:
+      linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
