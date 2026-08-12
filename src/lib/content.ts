@@ -509,15 +509,15 @@ export function asMedia(value: unknown) {
   return null
 }
 
-/** Prefer static /images fallback by slug, then CMS media. */
+/** CMS media first; static /images only as fallback. */
 export function resolveServiceImage(service: {
   slug?: unknown
   image?: unknown
 }) {
   const slug = String(service.slug || '')
   return (
-    DEMO_IMAGES.services[slug as keyof typeof DEMO_IMAGES.services] ||
     asMedia(service.image) ||
+    DEMO_IMAGES.services[slug as keyof typeof DEMO_IMAGES.services] ||
     null
   )
 }
@@ -528,8 +528,8 @@ export function resolveDoctorPhoto(doctor: {
 }) {
   const slug = String(doctor.slug || '')
   return (
-    DEMO_IMAGES.doctors[slug as keyof typeof DEMO_IMAGES.doctors] ||
     asMedia(doctor.photo) ||
+    DEMO_IMAGES.doctors[slug as keyof typeof DEMO_IMAGES.doctors] ||
     null
   )
 }
@@ -542,8 +542,8 @@ export function resolveCaseImages(item: {
   const slug = String(item.slug || '')
   const demo = DEMO_IMAGES.cases[slug as keyof typeof DEMO_IMAGES.cases]
   return {
-    beforeImage: demo?.before || asMedia(item.beforeImage) || null,
-    afterImage: demo?.after || asMedia(item.afterImage) || null,
+    beforeImage: asMedia(item.beforeImage) || demo?.before || null,
+    afterImage: asMedia(item.afterImage) || demo?.after || null,
   }
 }
 
@@ -553,8 +553,8 @@ export function resolveArticleCover(article: {
 }) {
   const slug = String(article.slug || '')
   return (
-    DEMO_IMAGES.articles[slug as keyof typeof DEMO_IMAGES.articles] ||
     asMedia(article.coverImage) ||
+    DEMO_IMAGES.articles[slug as keyof typeof DEMO_IMAGES.articles] ||
     null
   )
 }
@@ -565,8 +565,8 @@ export function resolveTechnologyImage(item: {
 }) {
   const slug = String(item.slug || '')
   return (
-    DEMO_IMAGES.technologies[slug as keyof typeof DEMO_IMAGES.technologies] ||
     asMedia(item.image) ||
+    DEMO_IMAGES.technologies[slug as keyof typeof DEMO_IMAGES.technologies] ||
     null
   )
 }

@@ -7,6 +7,9 @@ import { buildMetadata } from '@/lib/seo/metadata'
 
 import './globals.css'
 
+/** Refresh CMS content every minute (ISR). */
+export const revalidate = 60
+
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   variable: '--font-geist-sans',

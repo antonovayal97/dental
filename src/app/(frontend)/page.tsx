@@ -132,7 +132,10 @@ export default async function HomePage() {
         secondaryCtaLabel={secondaryLabel}
         secondaryCtaHref={secondaryHref}
         services={serviceOptions}
-        image={DEMO_IMAGES.hero}
+        image={
+          asMedia(site.defaultSEO?.ogImage) ||
+          DEMO_IMAGES.hero
+        }
       />
 
       <TrustBar />
