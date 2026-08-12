@@ -12,18 +12,22 @@ import { DEMO_ABOUT } from '@/lib/demo-content'
 import { cn } from '@/lib/utils'
 
 export type AboutPreviewProps = {
+  eyebrow?: string
   title?: string
   blurb?: string
   href?: string
+  ctaLabel?: string
   image?: MediaImageSource | null
   isDemo?: boolean
   className?: string
 }
 
 export function AboutPreview({
+  eyebrow = 'О клинике',
   title = DEMO_ABOUT.title,
   blurb = DEMO_ABOUT.blurb,
   href = '/about',
+  ctaLabel = 'Подробнее о клинике',
   image,
   isDemo,
   className,
@@ -40,7 +44,7 @@ export function AboutPreview({
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <SlideUp>
             <div className="flex items-center gap-3">
-              <p className="text-label">О клинике</p>
+              <p className="text-label">{eyebrow}</p>
               {showDemo ? <DemoBadge /> : null}
             </div>
             <h2 id="about-preview-heading" className="mt-3 text-heading">
@@ -51,7 +55,7 @@ export function AboutPreview({
               href={href}
               className={cn(buttonVariants({ variant: 'outline' }), 'mt-8')}
             >
-              Подробнее о клинике
+              {ctaLabel}
             </Link>
           </SlideUp>
 

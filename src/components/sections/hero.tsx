@@ -25,8 +25,10 @@ export type HeroProps = {
   primaryCtaLabel?: string
   secondaryCtaLabel?: string
   secondaryCtaHref?: string
+  statsLabel?: string
   stats?: HeroStat[] | null
   image?: MediaImageSource | null
+  imageAlt?: string
   services?: ServiceOption[]
   className?: string
 }
@@ -44,8 +46,10 @@ export function Hero({
   primaryCtaLabel = 'Записаться на консультацию',
   secondaryCtaLabel = 'Посмотреть услуги',
   secondaryCtaHref = '/services',
+  statsLabel = 'Показатели клиники',
   stats,
   image,
+  imageAlt = 'Атмосфера современной стоматологической клиники',
   services,
   className,
 }: HeroProps) {
@@ -99,7 +103,7 @@ export function Hero({
 
             <div className="mt-12 border-t border-border/80 pt-8">
               <div className="mb-4 flex items-center gap-2">
-                <p className="text-caption">Показатели клиники</p>
+                <p className="text-caption">{statsLabel}</p>
                 {usingDemoStats ? <DemoBadge /> : null}
               </div>
               <dl className="grid grid-cols-2 gap-6 sm:grid-cols-3">
@@ -123,7 +127,7 @@ export function Hero({
               />
               <MediaImage
                 media={image}
-                alt="Атмосфера современной стоматологической клиники"
+                alt={imageAlt}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 42vw"

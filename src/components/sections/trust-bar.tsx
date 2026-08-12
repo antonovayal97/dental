@@ -1,7 +1,11 @@
 import {
   ClipboardList,
+  Cpu,
+  HandHeart,
   MonitorSmartphone,
   ShieldCheck,
+  Sparkles,
+  Stethoscope,
   UserRound,
   type LucideIcon,
 } from 'lucide-react'
@@ -10,11 +14,22 @@ import { SlideUp, StaggerChildren, StaggerItem } from '@/components/shared/motio
 import { Container } from '@/components/ui/container'
 import { cn } from '@/lib/utils'
 
+const TRUST_ICONS: Record<string, LucideIcon> = {
+  doctors: UserRound,
+  equipment: MonitorSmartphone,
+  guarantee: ShieldCheck,
+  plan: ClipboardList,
+  diagnostics: Stethoscope,
+  comfort: HandHeart,
+  sterile: Sparkles,
+  digital: Cpu,
+}
+
 export type TrustBarItem = {
   id: string
   title: string
   description?: string
-  icon: LucideIcon
+  icon: string | LucideIcon
 }
 
 export type TrustBarProps = {
@@ -27,27 +42,34 @@ const DEFAULT_ITEMS: TrustBarItem[] = [
     id: 'doctors',
     title: 'Опытные врачи',
     description: 'Узкая специализация и понятный план лечения',
-    icon: UserRound,
+    icon: 'doctors',
   },
   {
     id: 'equipment',
     title: 'Современное оборудование',
     description: 'Цифровая диагностика и точная работа',
-    icon: MonitorSmartphone,
+    icon: 'equipment',
   },
   {
     id: 'guarantee',
     title: 'Гарантия на лечение',
     description: 'Условия фиксируем до начала работ',
-    icon: ShieldCheck,
+    icon: 'guarantee',
   },
   {
     id: 'plan',
     title: 'Индивидуальный план',
     description: 'Лечение под вашу клиническую ситуацию',
-    icon: ClipboardList,
+    icon: 'plan',
   },
 ]
+
+function resolveIcon(icon: string | LucideIcon): LucideIcon {
+  if (typeof icon === 'string') {
+    return TRUST_ICONS[icon] || UserRound
+  }
+  return icon
+}
 
 export function TrustBar({ items = DEFAULT_ITEMS, className }: TrustBarProps) {
   const list = items.length > 0 ? items : DEFAULT_ITEMS
@@ -61,7 +83,7 @@ export function TrustBar({ items = DEFAULT_ITEMS, className }: TrustBarProps) {
         <SlideUp>
           <StaggerChildren className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {list.map((item) => {
-              const Icon = item.icon
+              const Icon = resolveIcon(item.icon)
               return (
                 <StaggerItem key={item.id}>
                   <div className="flex gap-4">

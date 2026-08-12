@@ -21,6 +21,9 @@ export type ContactsPreviewProps = {
   city?: string
   workingHours?: ContactsPreviewHours[] | null
   href?: string
+  eyebrow?: string
+  description?: string
+  ctaLabel?: string
   isDemo?: boolean
   className?: string
 }
@@ -33,6 +36,9 @@ export function ContactsPreview({
   city = DEMO_CLINIC.city,
   workingHours,
   href = '/contacts',
+  eyebrow = 'Контакты',
+  description = 'Приезжайте в удобное время или оставьте заявку — поможем сориентироваться по услугам и записи.',
+  ctaLabel = 'Все контакты и схема проезда',
   isDemo,
   className,
 }: ContactsPreviewProps) {
@@ -61,7 +67,7 @@ export function ContactsPreview({
             <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
               <div className="border-b border-border/80 p-6 sm:p-8 lg:border-b-0 lg:border-r">
                 <div className="flex items-center gap-3">
-                  <p className="text-label">Контакты</p>
+                  <p className="text-label">{eyebrow}</p>
                   {showDemo ? <DemoBadge /> : null}
                 </div>
                 <h2
@@ -70,10 +76,7 @@ export function ContactsPreview({
                 >
                   {clinicName}
                 </h2>
-                <p className="mt-3 max-w-md text-body">
-                  Приезжайте в удобное время или оставьте заявку — поможем
-                  сориентироваться по услугам и записи.
-                </p>
+                <p className="mt-3 max-w-md text-body">{description}</p>
 
                 <dl className="mt-8 space-y-4">
                   <div className="flex gap-3">
@@ -133,7 +136,7 @@ export function ContactsPreview({
                   href={href}
                   className={cn(buttonVariants({ variant: 'outline' }), 'mt-8')}
                 >
-                  Все контакты и схема проезда
+                  {ctaLabel}
                 </Link>
               </div>
 

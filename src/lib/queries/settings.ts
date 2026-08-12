@@ -48,6 +48,73 @@ export type SEOSettingsDoc = Record<string, unknown> & {
   googleSiteVerification?: string | null
 }
 
+export type HomepageSectionHeading = {
+  enabled?: boolean | null
+  eyebrow?: string | null
+  title?: string | null
+  description?: string | null
+  limit?: number | null
+  disclaimer?: string | null
+}
+
+export type HomepageSettingsDoc = Record<string, unknown> & {
+  seo?: {
+    title?: string | null
+    description?: string | null
+  } | null
+  hero?: {
+    enabled?: boolean | null
+    eyebrow?: string | null
+    title?: string | null
+    subtitle?: string | null
+    primaryCtaLabel?: string | null
+    secondaryCtaLabel?: string | null
+    secondaryCtaHref?: string | null
+    image?: unknown
+    imageAlt?: string | null
+    statsLabel?: string | null
+  } | null
+  trustBar?: {
+    enabled?: boolean | null
+    items?: Array<{
+      id?: string
+      icon?: string | null
+      title?: string | null
+      description?: string | null
+    }> | null
+  } | null
+  services?: HomepageSectionHeading | null
+  whyUs?: HomepageSectionHeading | null
+  doctors?: HomepageSectionHeading | null
+  technology?: HomepageSectionHeading | null
+  cases?: HomepageSectionHeading | null
+  reviews?: HomepageSectionHeading | null
+  about?: {
+    enabled?: boolean | null
+    eyebrow?: string | null
+    title?: string | null
+    blurb?: string | null
+    image?: unknown
+    ctaLabel?: string | null
+    ctaHref?: string | null
+  } | null
+  faq?: HomepageSectionHeading | null
+  blog?: HomepageSectionHeading | null
+  cta?: {
+    enabled?: boolean | null
+    eyebrow?: string | null
+    title?: string | null
+    description?: string | null
+    benefits?: Array<{ id?: string; text?: string | null }> | null
+  } | null
+  contacts?: {
+    enabled?: boolean | null
+    eyebrow?: string | null
+    description?: string | null
+    ctaLabel?: string | null
+  } | null
+}
+
 export const getSiteSettings = cache(async (): Promise<SiteSettingsDoc | null> => {
   try {
     const payload = await getPayloadClient()
@@ -99,3 +166,18 @@ export const getSEOSettings = cache(async (): Promise<SEOSettingsDoc | null> => 
     return null
   }
 })
+
+export const getHomepageSettings = cache(
+  async (): Promise<HomepageSettingsDoc | null> => {
+    try {
+      const payload = await getPayloadClient()
+      const doc = await payload.findGlobal({
+        slug: 'homepage-settings',
+        depth: 1,
+      })
+      return doc as unknown as HomepageSettingsDoc
+    } catch {
+      return null
+    }
+  },
+)

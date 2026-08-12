@@ -37,10 +37,13 @@ export {
 export {
   getFooterSettings,
   getHeaderSettings,
+  getHomepageSettings,
   getSEOSettings,
   getSiteSettings,
   type FooterSettingsDoc,
   type HeaderSettingsDoc,
+  type HomepageSettingsDoc,
+  type HomepageSectionHeading,
   type SEOSettingsDoc,
   type SiteSettingsDoc,
 } from './settings'

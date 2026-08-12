@@ -115,12 +115,14 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'site-settings': SiteSetting;
+    'homepage-settings': HomepageSetting;
     'header-settings': HeaderSetting;
     'footer-settings': FooterSetting;
     'seo-settings': SeoSetting;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'homepage-settings': HomepageSettingsSelect<false> | HomepageSettingsSelect<true>;
     'header-settings': HeaderSettingsSelect<false> | HeaderSettingsSelect<true>;
     'footer-settings': FooterSettingsSelect<false> | FooterSettingsSelect<true>;
     'seo-settings': SeoSettingsSelect<false> | SeoSettingsSelect<true>;
@@ -1299,6 +1301,132 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Тексты, изображения и видимость блоков главной. Списки услуг/врачей/отзывов редактируются в соответствующих коллекциях.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-settings".
+ */
+export interface HomepageSetting {
+  id: string;
+  seo?: {
+    /**
+     * Если пусто — берётся title из SEO / настроек сайта
+     */
+    title?: string | null;
+    description?: string | null;
+  };
+  hero?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    /**
+     * Можно использовать перенос строки
+     */
+    title?: string | null;
+    subtitle?: string | null;
+    primaryCtaLabel?: string | null;
+    secondaryCtaLabel?: string | null;
+    secondaryCtaHref?: string | null;
+    image?: (string | null) | Media;
+    imageAlt?: string | null;
+    statsLabel?: string | null;
+  };
+  trustBar?: {
+    enabled?: boolean | null;
+    items?:
+      | {
+          icon: 'doctors' | 'equipment' | 'guarantee' | 'plan' | 'diagnostics' | 'comfort' | 'sterile' | 'digital';
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  services?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    limit?: number | null;
+  };
+  whyUs?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+  };
+  doctors?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    limit?: number | null;
+  };
+  technology?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+  };
+  cases?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    disclaimer?: string | null;
+    limit?: number | null;
+  };
+  reviews?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    limit?: number | null;
+  };
+  about?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    blurb?: string | null;
+    image?: (string | null) | Media;
+    ctaLabel?: string | null;
+    ctaHref?: string | null;
+  };
+  faq?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    limit?: number | null;
+  };
+  blog?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    limit?: number | null;
+  };
+  cta?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    title?: string | null;
+    description?: string | null;
+    benefits?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  contacts?: {
+    enabled?: boolean | null;
+    eyebrow?: string | null;
+    description?: string | null;
+    ctaLabel?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * Настройки навигации и CTA в шапке
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1426,6 +1554,152 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         label?: T;
         value?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-settings_select".
+ */
+export interface HomepageSettingsSelect<T extends boolean = true> {
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  hero?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        subtitle?: T;
+        primaryCtaLabel?: T;
+        secondaryCtaLabel?: T;
+        secondaryCtaHref?: T;
+        image?: T;
+        imageAlt?: T;
+        statsLabel?: T;
+      };
+  trustBar?:
+    | T
+    | {
+        enabled?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  services?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        limit?: T;
+      };
+  whyUs?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+      };
+  doctors?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        limit?: T;
+      };
+  technology?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+      };
+  cases?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        disclaimer?: T;
+        limit?: T;
+      };
+  reviews?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        limit?: T;
+      };
+  about?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        blurb?: T;
+        image?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+      };
+  faq?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        limit?: T;
+      };
+  blog?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        limit?: T;
+      };
+  cta?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        title?: T;
+        description?: T;
+        benefits?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+      };
+  contacts?:
+    | T
+    | {
+        enabled?: T;
+        eyebrow?: T;
+        description?: T;
+        ctaLabel?: T;
       };
   updatedAt?: T;
   createdAt?: T;

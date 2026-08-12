@@ -10,17 +10,27 @@ export type CtaBannerProps = {
   eyebrow?: string
   title?: string
   description?: string
+  benefits?: string[]
   services?: ServiceOption[]
   className?: string
 }
+
+const DEFAULT_BENEFITS = [
+  'Без навязчивых продаж — сначала диагностика и план',
+  'Понятные этапы и ориентиры по стоимости',
+  'Спокойный ритм приёма и бережный подход',
+]
 
 export function CtaBanner({
   eyebrow = 'Запись',
   title = 'Запишитесь на консультацию',
   description = 'Оставьте контакты — администратор перезвонит, уточнит задачу и подберёт удобное время.',
+  benefits = DEFAULT_BENEFITS,
   services,
   className,
 }: CtaBannerProps) {
+  const benefitItems = benefits.length > 0 ? benefits : DEFAULT_BENEFITS
+
   return (
     <section
       id="appointment"
@@ -48,18 +58,15 @@ export function CtaBanner({
             </h2>
             <p className="mt-4 max-w-md text-body">{description}</p>
             <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
-              <li className="flex gap-3">
-                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                Без навязчивых продаж — сначала диагностика и план
-              </li>
-              <li className="flex gap-3">
-                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                Понятные этапы и ориентиры по стоимости
-              </li>
-              <li className="flex gap-3">
-                <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                Спокойный ритм приёма и бережный подход
-              </li>
+              {benefitItems.map((text) => (
+                <li key={text} className="flex gap-3">
+                  <span
+                    className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent"
+                    aria-hidden="true"
+                  />
+                  {text}
+                </li>
+              ))}
             </ul>
           </SlideUp>
 

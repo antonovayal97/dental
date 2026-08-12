@@ -29,6 +29,7 @@ import {
   getDoctors,
   getFAQs,
   getFeaturedReviews,
+  getHomepageSettings,
   getPageBySlug,
   getPrices,
   getRelatedServices,
@@ -44,6 +45,7 @@ import {
   type CaseDoc,
   type DoctorDoc,
   type FAQDoc,
+  type HomepageSettingsDoc,
   type PageDoc,
   type PriceDoc,
   type ReviewDoc,
@@ -468,6 +470,23 @@ export async function safeGetPageBySlug(slug: string): Promise<{
 
 export function getDemoAbout() {
   return DEMO_ABOUT
+}
+
+export async function safeGetHomepageSettings(): Promise<{
+  data: HomepageSettingsDoc
+  isDemo: boolean
+}> {
+  try {
+    const data = await getHomepageSettings()
+    if (data) return { data, isDemo: false }
+  } catch {
+    // fall through
+  }
+
+  return {
+    data: {},
+    isDemo: true,
+  }
 }
 
 export function relationTitle(value: unknown): string | null {
