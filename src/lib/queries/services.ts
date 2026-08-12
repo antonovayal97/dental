@@ -28,6 +28,53 @@ const publishedWhere: Where = {
   },
 }
 
+function extractRelatedServiceIds(related: unknown): Array<string | number> {
+  if (!Array.isArray(related)) return []
+
+  return related
+    .map((item) => {
+      if (typeof item === 'string' || typeof item === 'number') return item
+      if (item && typeof item === 'object' && 'id' in item) {
+        return (item as { id: string | number }).id
+      }
+      return null
+    })
+    .filter((id): id is string | number => id != null)
+}
+
+async function fetchServicesByIds(
+  ids: Array<string | number>,
+  depth: number,
+): Promise<ServiceDoc[]> {
+  if (ids.length === 0) return []
+
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'services',
+    draft: false,
+    depth,
+    limit: ids.length,
+    where: {
+      and: [
+        publishedWhere,
+        {
+          id: {
+            in: ids,
+          },
+        },
+      ],
+    },
+  })
+
+  const byId = new Map(
+    (result.docs as unknown as ServiceDoc[]).map((doc) => [doc.id, doc]),
+  )
+
+  return ids
+    .map((id) => byId.get(id))
+    .filter((doc): doc is ServiceDoc => Boolean(doc))
+}
+
 export async function getServices(options?: {
   limit?: number
   categorySlug?: string
@@ -125,18 +172,11 @@ export async function getRelatedServices(
   options?: { limit?: number; depth?: number },
 ): Promise<ServiceDoc[]> {
   const limit = options?.limit ?? 4
-  const depth = options?.depth ?? 1
-  const related = service.relatedServices
+  const depth = options?.depth ?? 2
+  const relatedIds = extractRelatedServiceIds(service.relatedServices).slice(0, limit)
 
-  if (Array.isArray(related) && related.length > 0) {
-    const docs = related
-      .filter((item): item is ServiceDoc => {
-        if (!item || typeof item !== 'object') return false
-        const status = (item as unknown as ServiceDoc)._status
-        return !status || status === 'published'
-      })
-      .slice(0, limit)
-
+  if (relatedIds.length > 0) {
+    const docs = await fetchServicesByIds(relatedIds, depth)
     if (docs.length > 0) return docs
   }
 
