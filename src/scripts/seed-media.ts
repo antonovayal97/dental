@@ -15,6 +15,10 @@ import config from '../payload.config'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const imagesDir = path.resolve(__dirname, '../../public/images')
 
+function mediaId(id: string | number): string {
+  return String(id)
+}
+
 async function ensureMedia(
   payload: Awaited<ReturnType<typeof getPayload>>,
   filename: string,
@@ -90,10 +94,10 @@ async function main() {
   }
 
   console.log('Linking doctors...')
-  const doctorMap: Array<{ slug: string; photo: string | number }> = [
-    { slug: 'anna-orlova', photo: media.doctorAnna.id },
-    { slug: 'igor-savelyev', photo: media.doctorIgor.id },
-    { slug: 'maria-kim', photo: media.doctorMaria.id },
+  const doctorMap: Array<{ slug: string; photo: string }> = [
+    { slug: 'anna-orlova', photo: mediaId(media.doctorAnna.id) },
+    { slug: 'igor-savelyev', photo: mediaId(media.doctorIgor.id) },
+    { slug: 'maria-kim', photo: mediaId(media.doctorMaria.id) },
   ]
 
   for (const item of doctorMap) {
@@ -108,16 +112,16 @@ async function main() {
   }
 
   console.log('Linking services...')
-  const serviceMap: Array<{ slug: string; image: string | number }> = [
-    { slug: 'therapy', image: media.therapy.id },
-    { slug: 'implantation', image: media.implantation.id },
-    { slug: 'prosthetics', image: media.prosthetics.id },
-    { slug: 'orthodontics', image: media.orthodontics.id },
-    { slug: 'aesthetic', image: media.aesthetic.id },
-    { slug: 'pediatric', image: media.pediatric.id },
-    { slug: 'surgery', image: media.surgery.id },
-    { slug: 'hygiene', image: media.hygiene.id },
-    { slug: 'whitening', image: media.whitening.id },
+  const serviceMap: Array<{ slug: string; image: string }> = [
+    { slug: 'therapy', image: mediaId(media.therapy.id) },
+    { slug: 'implantation', image: mediaId(media.implantation.id) },
+    { slug: 'prosthetics', image: mediaId(media.prosthetics.id) },
+    { slug: 'orthodontics', image: mediaId(media.orthodontics.id) },
+    { slug: 'aesthetic', image: mediaId(media.aesthetic.id) },
+    { slug: 'pediatric', image: mediaId(media.pediatric.id) },
+    { slug: 'surgery', image: mediaId(media.surgery.id) },
+    { slug: 'hygiene', image: mediaId(media.hygiene.id) },
+    { slug: 'whitening', image: mediaId(media.whitening.id) },
   ]
 
   for (const item of serviceMap) {
@@ -132,10 +136,10 @@ async function main() {
   }
 
   console.log('Linking articles...')
-  const articleMap: Array<{ slug: string; cover: string | number }> = [
-    { slug: 'how-to-choose-implant', cover: media.blogImplant.id },
-    { slug: 'wisdom-tooth-removal', cover: media.blogWisdom.id },
-    { slug: 'professional-hygiene-frequency', cover: media.blogHygiene.id },
+  const articleMap: Array<{ slug: string; cover: string }> = [
+    { slug: 'how-to-choose-implant', cover: mediaId(media.blogImplant.id) },
+    { slug: 'wisdom-tooth-removal', cover: mediaId(media.blogWisdom.id) },
+    { slug: 'professional-hygiene-frequency', cover: mediaId(media.blogHygiene.id) },
   ]
 
   for (const item of articleMap) {
@@ -150,10 +154,10 @@ async function main() {
   }
 
   console.log('Linking technologies...')
-  const techMap: Array<{ slug: string; image: string | number }> = [
-    { slug: '3d-diagnostics', image: media.techScanner.id },
-    { slug: 'digital-scanner', image: media.techScanner.id },
-    { slug: 'microscope', image: media.techMicroscope.id },
+  const techMap: Array<{ slug: string; image: string }> = [
+    { slug: '3d-diagnostics', image: mediaId(media.techScanner.id) },
+    { slug: 'digital-scanner', image: mediaId(media.techScanner.id) },
+    { slug: 'microscope', image: mediaId(media.techMicroscope.id) },
   ]
 
   for (const item of techMap) {
@@ -177,24 +181,24 @@ async function main() {
     {
       title: 'Восстановление улыбки после имплантации',
       slug: 'smile-rehab',
-      service: implantService?.id,
-      doctor: doctorIgor?.id,
+      service: implantService ? mediaId(implantService.id) : undefined,
+      doctor: doctorIgor ? mediaId(doctorIgor.id) : undefined,
       description:
         'Демо-кейс: планирование имплантации и аккуратное протезирование. Результаты индивидуальны.',
-      beforeImage: media.smileBefore.id,
-      afterImage: media.smileAfter.id,
+      beforeImage: mediaId(media.smileBefore.id),
+      afterImage: mediaId(media.smileAfter.id),
       duration: 'несколько этапов',
       disclaimer: 'Результаты лечения индивидуальны и могут отличаться.',
     },
     {
       title: 'Профессиональная гигиена',
       slug: 'hygiene-restore',
-      service: hygieneService?.id,
-      doctor: doctorAnna?.id,
+      service: hygieneService ? mediaId(hygieneService.id) : undefined,
+      doctor: doctorAnna ? mediaId(doctorAnna.id) : undefined,
       description:
         'Демо-кейс: профессиональная гигиена с удалением налёта и полировкой. Результаты индивидуальны.',
-      beforeImage: media.hygieneBefore.id,
-      afterImage: media.hygieneAfter.id,
+      beforeImage: mediaId(media.hygieneBefore.id),
+      afterImage: mediaId(media.hygieneAfter.id),
       duration: '1 визит',
       disclaimer: 'Результаты лечения индивидуальны и могут отличаться.',
     },
@@ -248,7 +252,7 @@ async function main() {
         title: 'Aura Dental — современная стоматология',
         description:
           'Премиальная стоматологическая клиника: диагностика, терапия, имплантация, ортодонтия и эстетика.',
-        ogImage: media.og.id,
+        ogImage: mediaId(media.og.id),
       },
     },
     overrideAccess: true,
