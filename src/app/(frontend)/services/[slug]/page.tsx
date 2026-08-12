@@ -351,6 +351,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           eyebrow="Смотрите также"
           title="Связанные услуги"
           description="Дополнительные направления, которые часто идут рядом с выбранной услугой."
+          showViewAll={false}
         />
       ) : null}
     </>

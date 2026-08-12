@@ -29,6 +29,7 @@ export type ServicesGridProps = {
   title?: string
   description?: string
   viewAllHref?: string
+  showViewAll?: boolean
   className?: string
 }
 
@@ -48,6 +49,7 @@ export function ServicesGrid({
   title = 'Направления, в которых мы сильны',
   description = 'От гигиены и терапии до имплантации и ортодонтии — спокойный путь к результату.',
   viewAllHref = '/services',
+  showViewAll = true,
   className,
 }: ServicesGridProps) {
   const items = services === undefined || services === null ? DEMO_ITEMS : services
@@ -71,15 +73,22 @@ export function ServicesGrid({
               {title}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            {usingDemo ? <DemoBadge /> : null}
-            <Link
-              href={viewAllHref}
-              className={cn(buttonVariants({ variant: 'outline' }), 'shrink-0')}
-            >
-              Все услуги
-            </Link>
-          </div>
+          {usingDemo || showViewAll ? (
+            <div className="flex items-center gap-3">
+              {usingDemo ? <DemoBadge /> : null}
+              {showViewAll ? (
+                <Link
+                  href={viewAllHref}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'shrink-0',
+                  )}
+                >
+                  Все услуги
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         {items.length === 0 ? (

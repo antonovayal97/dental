@@ -38,6 +38,7 @@ export type BlogPreviewProps = {
   title?: string
   description?: string
   viewAllHref?: string
+  showViewAll?: boolean
   className?: string
 }
 
@@ -59,6 +60,7 @@ export function BlogPreview({
   title = 'Полезные материалы для пациентов',
   description = 'Короткие статьи о подготовке к приёму, профилактике и этапах лечения.',
   viewAllHref = '/blog',
+  showViewAll = true,
   className,
 }: BlogPreviewProps) {
   const items =
@@ -82,15 +84,22 @@ export function BlogPreview({
               {title}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            {usingDemo ? <DemoBadge /> : null}
-            <Link
-              href={viewAllHref}
-              className={cn(buttonVariants({ variant: 'outline' }), 'shrink-0')}
-            >
-              Все статьи
-            </Link>
-          </div>
+          {usingDemo || showViewAll ? (
+            <div className="flex items-center gap-3">
+              {usingDemo ? <DemoBadge /> : null}
+              {showViewAll ? (
+                <Link
+                  href={viewAllHref}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'shrink-0',
+                  )}
+                >
+                  Все статьи
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         {items.length === 0 ? (

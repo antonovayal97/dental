@@ -69,6 +69,7 @@ export default async function ServicesPage() {
         eyebrow=""
         title="Все услуги клиники"
         description="Прозрачные описания и спокойный путь от диагностики до результата."
+        showViewAll={false}
         className="!pt-10"
       />
     </>

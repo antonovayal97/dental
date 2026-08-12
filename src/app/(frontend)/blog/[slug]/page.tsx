@@ -164,18 +164,12 @@ export default async function ArticlePage({ params }: PageProps) {
         <section className="section-padding">
           <Container>
             <div className="prose-clinic whitespace-pre-line">{content}</div>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10">
               <Link
                 href="/#appointment"
                 className={cn(buttonVariants({ size: 'lg' }))}
               >
                 Записаться на консультацию
-              </Link>
-              <Link
-                href="/blog"
-                className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
-              >
-                Все статьи
               </Link>
             </div>
           </Container>

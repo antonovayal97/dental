@@ -71,7 +71,7 @@ export default async function BlogPage() {
           isDemo: Boolean(article.isDemo) || isDemo,
         }))}
         className="!pt-10"
-        viewAllHref="/blog"
+        showViewAll={false}
       />
     </>
   )
