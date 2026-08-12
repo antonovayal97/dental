@@ -183,7 +183,6 @@ export function AppointmentForm({
           id={phoneId}
           label="Телефон"
           required
-          hint="Формат: +7 (999) 123-45-67"
           error={showError('phone') ? errors.phone?.message : undefined}
         >
           <Controller
@@ -198,7 +197,7 @@ export function AppointmentForm({
                 disabled={isSubmitting}
                 aria-invalid={showError('phone') || undefined}
                 aria-describedby={
-                  showError('phone') ? `${phoneId}-error` : `${phoneId}-hint`
+                  showError('phone') ? `${phoneId}-error` : undefined
                 }
               />
             )}

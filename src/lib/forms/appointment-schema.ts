@@ -12,7 +12,7 @@ export const appointmentSchema = z.object({
   phone: z
     .string({ required_error: 'Укажите телефон' })
     .trim()
-    .refine(isCompletePhone, 'Введите полный номер: +7 (999) 123-45-67'),
+    .refine(isCompletePhone, 'Введите полный номер телефона'),
   service: z.string().max(120).optional().or(z.literal('')),
   preferredDate: z
     .string()

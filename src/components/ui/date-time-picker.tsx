@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+import { createPortal } from 'react-dom'
 import {
   CalendarDays,
   ChevronLeft,
@@ -18,6 +19,9 @@ const TIME_SLOTS = Array.from({ length: 23 }, (_, index) => {
   const minute = index % 2 === 0 ? '00' : '30'
   return `${String(hour).padStart(2, '0')}:${minute}`
 })
+const POPUP_GAP = 8
+const VIEWPORT_PADDING = 16
+const POPUP_WIDTH = 352 // 22rem
 
 export interface DateTimePickerProps {
   id?: string
@@ -103,8 +107,14 @@ export function DateTimePicker({
   'aria-describedby': ariaDescribedBy,
 }: DateTimePickerProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const popupRef = React.useRef<HTMLDivElement>(null)
   const selectedDate = parseLocalDateTime(value)
   const [open, setOpen] = React.useState(false)
+  const [popupStyle, setPopupStyle] = React.useState<React.CSSProperties>({
+    visibility: 'hidden',
+  })
+  const [mounted, setMounted] = React.useState(false)
   const [viewMonth, setViewMonth] = React.useState(
     () => selectedDate ?? minDate ?? new Date(),
   )
@@ -117,10 +127,74 @@ export function DateTimePicker({
   })
 
   React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const updatePopupPosition = React.useCallback(() => {
+    const trigger = triggerRef.current
+    const popup = popupRef.current
+    if (!trigger || !popup) return
+
+    const rect = trigger.getBoundingClientRect()
+    const popupHeight = popup.offsetHeight
+    const popupWidth = Math.min(
+      POPUP_WIDTH,
+      window.innerWidth - VIEWPORT_PADDING * 2,
+    )
+
+    const spaceBelow = window.innerHeight - rect.bottom - POPUP_GAP
+    const spaceAbove = rect.top - POPUP_GAP
+    const openAbove = spaceBelow < popupHeight && spaceAbove > spaceBelow
+
+    let top = openAbove
+      ? rect.top - popupHeight - POPUP_GAP
+      : rect.bottom + POPUP_GAP
+
+    const maxTop = window.innerHeight - popupHeight - VIEWPORT_PADDING
+    top = Math.max(VIEWPORT_PADDING, Math.min(top, maxTop))
+
+    let left = rect.left
+    const maxLeft = window.innerWidth - popupWidth - VIEWPORT_PADDING
+    left = Math.max(VIEWPORT_PADDING, Math.min(left, maxLeft))
+
+    setPopupStyle({
+      position: 'fixed',
+      top,
+      left,
+      width: popupWidth,
+      zIndex: 200,
+      visibility: 'visible',
+    })
+  }, [])
+
+  React.useEffect(() => {
+    if (!open) return
+
+    const frame = requestAnimationFrame(() => {
+      updatePopupPosition()
+    })
+
+    const handleReposition = () => updatePopupPosition()
+
+    window.addEventListener('resize', handleReposition)
+    window.addEventListener('scroll', handleReposition, true)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', handleReposition)
+      window.removeEventListener('scroll', handleReposition, true)
+    }
+  }, [open, updatePopupPosition, viewMonth, pendingDate, pendingTime])
+
+  React.useEffect(() => {
     if (!open) return
 
     const handlePointerDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node
+      if (
+        !rootRef.current?.contains(target) &&
+        !popupRef.current?.contains(target)
+      ) {
         setOpen(false)
       }
     }
@@ -204,6 +278,7 @@ export function DateTimePicker({
         )}
       >
         <button
+          ref={triggerRef}
           id={id}
           type="button"
           disabled={disabled}
@@ -244,140 +319,156 @@ export function DateTimePicker({
         )}
       </div>
 
-      {open ? (
-        <div
-          role="dialog"
-          aria-label="Выбор даты и времени"
-          className="absolute z-50 mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-border/80 bg-card shadow-lift sm:w-[22rem]"
-        >
-          <div className="border-b border-border/70 px-4 py-3">
-            <div className="flex items-center justify-between gap-3">
-              <button
-                type="button"
-                aria-label="Предыдущий месяц"
-                className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                onClick={() =>
-                  setViewMonth(
-                    (current) =>
-                      new Date(current.getFullYear(), current.getMonth() - 1, 1),
-                  )
-                }
-              >
-                <ChevronLeft className="size-4" />
-              </button>
-              <p className="text-sm font-semibold capitalize text-foreground">
-                {monthLabel}
-              </p>
-              <button
-                type="button"
-                aria-label="Следующий месяц"
-                className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                onClick={() =>
-                  setViewMonth(
-                    (current) =>
-                      new Date(current.getFullYear(), current.getMonth() + 1, 1),
-                  )
-                }
-              >
-                <ChevronRight className="size-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="p-4">
-            <div className="mb-2 grid grid-cols-7 gap-1">
-              {WEEKDAYS.map((day) => (
-                <div
-                  key={day}
-                  className="py-1 text-center text-[0.65rem] font-medium uppercase tracking-[0.12em] text-muted-foreground"
-                >
-                  {day}
+      {open && mounted
+        ? createPortal(
+            <div
+              ref={popupRef}
+              role="dialog"
+              aria-label="Выбор даты и времени"
+              style={popupStyle}
+              className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-lift"
+            >
+              <div className="border-b border-border/70 px-4 py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    aria-label="Предыдущий месяц"
+                    className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    onClick={() =>
+                      setViewMonth(
+                        (current) =>
+                          new Date(
+                            current.getFullYear(),
+                            current.getMonth() - 1,
+                            1,
+                          ),
+                      )
+                    }
+                  >
+                    <ChevronLeft className="size-4" />
+                  </button>
+                  <p className="text-sm font-semibold capitalize text-foreground">
+                    {monthLabel}
+                  </p>
+                  <button
+                    type="button"
+                    aria-label="Следующий месяц"
+                    className="flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    onClick={() =>
+                      setViewMonth(
+                        (current) =>
+                          new Date(
+                            current.getFullYear(),
+                            current.getMonth() + 1,
+                            1,
+                          ),
+                      )
+                    }
+                  >
+                    <ChevronRight className="size-4" />
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
 
-            <div className="grid grid-cols-7 gap-1">
-              {buildCalendarDays(viewMonth).map((day, index) => {
-                if (!day) {
-                  return <div key={`empty-${index}`} aria-hidden="true" />
-                }
+              <div className="p-4">
+                <div className="mb-2 grid grid-cols-7 gap-1">
+                  {WEEKDAYS.map((day) => (
+                    <div
+                      key={day}
+                      className="py-1 text-center text-[0.65rem] font-medium uppercase tracking-[0.12em] text-muted-foreground"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                </div>
 
-                const disabledDay = isDayDisabled(day)
-                const isSelected = pendingDate ? isSameDay(day, pendingDate) : false
-                const isToday = isSameDay(day, new Date())
+                <div className="grid grid-cols-7 gap-1">
+                  {buildCalendarDays(viewMonth).map((day, index) => {
+                    if (!day) {
+                      return <div key={`empty-${index}`} aria-hidden="true" />
+                    }
 
-                return (
-                  <button
-                    key={day.toISOString()}
-                    type="button"
-                    disabled={disabledDay}
-                    onClick={() => setPendingDate(day)}
-                    className={cn(
-                      'flex h-9 items-center justify-center rounded-xl text-sm transition-colors',
-                      disabledDay && 'cursor-not-allowed opacity-35',
-                      !disabledDay && !isSelected && 'hover:bg-accent-soft',
-                      isToday && !isSelected && 'ring-1 ring-accent/30',
-                      isSelected && 'bg-accent text-accent-foreground shadow-soft',
-                    )}
-                  >
-                    {day.getDate()}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+                    const disabledDay = isDayDisabled(day)
+                    const isSelected = pendingDate
+                      ? isSameDay(day, pendingDate)
+                      : false
+                    const isToday = isSameDay(day, new Date())
 
-          <div className="border-t border-border/70 px-4 py-4">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
-              <Clock3 aria-hidden="true" className="size-4 text-accent" />
-              Время приёма
-            </div>
-            <div className="grid max-h-36 grid-cols-3 gap-2 overflow-auto sm:grid-cols-4">
-              {TIME_SLOTS.map((time) => {
-                const disabledTime = isTimeDisabled(time)
-                const isSelected = pendingTime === time
+                    return (
+                      <button
+                        key={day.toISOString()}
+                        type="button"
+                        disabled={disabledDay}
+                        onClick={() => setPendingDate(day)}
+                        className={cn(
+                          'flex h-9 items-center justify-center rounded-xl text-sm transition-colors',
+                          disabledDay && 'cursor-not-allowed opacity-35',
+                          !disabledDay && !isSelected && 'hover:bg-accent-soft',
+                          isToday && !isSelected && 'ring-1 ring-accent/30',
+                          isSelected &&
+                            'bg-accent text-accent-foreground shadow-soft',
+                        )}
+                      >
+                        {day.getDate()}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
 
-                return (
-                  <button
-                    key={time}
-                    type="button"
-                    disabled={disabledTime || !pendingDate}
-                    onClick={() => setPendingTime(time)}
-                    className={cn(
-                      'rounded-xl border px-2 py-2 text-xs font-medium transition-colors',
-                      disabledTime || !pendingDate
-                        ? 'cursor-not-allowed border-border/60 text-muted-foreground/50'
-                        : 'border-border hover:border-accent/35 hover:bg-accent-soft',
-                      isSelected &&
-                        'border-accent bg-accent text-accent-foreground shadow-soft hover:bg-accent',
-                    )}
-                  >
-                    {time}
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+              <div className="border-t border-border/70 px-4 py-4">
+                <div className="mb-3 flex items-center gap-2 text-sm font-medium text-foreground">
+                  <Clock3 aria-hidden="true" className="size-4 text-accent" />
+                  Время приёма
+                </div>
+                <div className="grid max-h-36 grid-cols-3 gap-2 overflow-auto sm:grid-cols-4">
+                  {TIME_SLOTS.map((time) => {
+                    const disabledTime = isTimeDisabled(time)
+                    const isSelected = pendingTime === time
 
-          <div className="flex items-center justify-end gap-2 border-t border-border/70 px-4 py-3">
-            <button
-              type="button"
-              className="rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              onClick={() => setOpen(false)}
-            >
-              Отмена
-            </button>
-            <button
-              type="button"
-              disabled={!pendingDate}
-              className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-soft transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
-              onClick={applySelection}
-            >
-              Выбрать
-            </button>
-          </div>
-        </div>
-      ) : null}
+                    return (
+                      <button
+                        key={time}
+                        type="button"
+                        disabled={disabledTime || !pendingDate}
+                        onClick={() => setPendingTime(time)}
+                        className={cn(
+                          'rounded-xl border px-2 py-2 text-xs font-medium transition-colors',
+                          disabledTime || !pendingDate
+                            ? 'cursor-not-allowed border-border/60 text-muted-foreground/50'
+                            : 'border-border hover:border-accent/35 hover:bg-accent-soft',
+                          isSelected &&
+                            'border-accent bg-accent text-accent-foreground shadow-soft hover:bg-accent',
+                        )}
+                      >
+                        {time}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 border-t border-border/70 px-4 py-3">
+                <button
+                  type="button"
+                  className="rounded-xl px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                  onClick={() => setOpen(false)}
+                >
+                  Отмена
+                </button>
+                <button
+                  type="button"
+                  disabled={!pendingDate}
+                  className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-soft transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={applySelection}
+                >
+                  Выбрать
+                </button>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   )
 }

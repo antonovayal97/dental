@@ -49,7 +49,7 @@ export const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          placeholder="+7 (999) 123-45-67"
+          placeholder="+7"
           className={cn(fieldControlClassName, 'pl-10', className)}
           {...props}
         />

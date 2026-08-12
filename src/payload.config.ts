@@ -25,6 +25,9 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — Стоматология',
     },
+    components: {
+      actions: ['./components/admin/clear-cache-button'],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },

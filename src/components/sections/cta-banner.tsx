@@ -25,7 +25,7 @@ export function CtaBanner({
     <section
       id="appointment"
       className={cn(
-        'relative overflow-hidden border-y border-border/70 section-padding',
+        'relative border-y border-border/70 section-padding',
         className,
       )}
       aria-labelledby="cta-banner-heading"
