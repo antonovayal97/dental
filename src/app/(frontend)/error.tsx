@@ -21,7 +21,7 @@ export default function Error({
   return (
     <section className="section-padding">
       <Container>
-        <div className="mx-auto max-w-2xl rounded-2xl border border-border/80 bg-card px-6 py-14 text-center shadow-soft sm:px-10">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-border/80 bg-card px-6 py-14 text-center sm:px-10">
           <p className="text-label text-accent">Что-то пошло не так</p>
           <h1 className="mt-4 text-heading">Не удалось загрузить страницу</h1>
           <p className="mt-4 text-body">

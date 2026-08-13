@@ -326,7 +326,7 @@ export function DateTimePicker({
               role="dialog"
               aria-label="Выбор даты и времени"
               style={popupStyle}
-              className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-lift"
+              className="overflow-hidden rounded-2xl border border-border/80 bg-card"
             >
               <div className="border-b border-border/70 px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
@@ -406,7 +406,7 @@ export function DateTimePicker({
                           !disabledDay && !isSelected && 'hover:bg-accent-soft',
                           isToday && !isSelected && 'ring-1 ring-accent/30',
                           isSelected &&
-                            'bg-accent text-accent-foreground shadow-soft',
+                            'bg-accent text-accent-foreground',
                         )}
                       >
                         {day.getDate()}
@@ -438,7 +438,7 @@ export function DateTimePicker({
                             ? 'cursor-not-allowed border-border/60 text-muted-foreground/50'
                             : 'border-border hover:border-accent/35 hover:bg-accent-soft',
                           isSelected &&
-                            'border-accent bg-accent text-accent-foreground shadow-soft hover:bg-accent',
+                            'border-accent bg-accent text-accent-foreground hover:bg-accent',
                         )}
                       >
                         {time}
@@ -459,7 +459,7 @@ export function DateTimePicker({
                 <button
                   type="button"
                   disabled={!pendingDate}
-                  className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground shadow-soft transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-50"
                   onClick={applySelection}
                 >
                   Выбрать

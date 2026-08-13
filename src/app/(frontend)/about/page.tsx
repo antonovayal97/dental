@@ -103,7 +103,7 @@ export default async function AboutPage() {
           </article>
 
           <aside className="space-y-6">
-            <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft">
+            <div className="rounded-2xl border border-border/80 bg-card p-6">
               <h2 className="text-subheading">Философия</h2>
               <ul className="mt-4 space-y-3 text-body">
                 <li>Сначала диагноз и план — потом лечение</li>

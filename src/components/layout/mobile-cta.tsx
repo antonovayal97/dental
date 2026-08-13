@@ -49,7 +49,7 @@ export function MobileCTA({
         <div className="min-w-0 flex-1">
           <AppointmentDialog
             triggerLabel={label}
-            triggerClassName="w-full shadow-lift"
+            triggerClassName="w-full"
             triggerSize="lg"
             services={services}
           />
@@ -79,7 +79,7 @@ export function MobileCTALink({
     >
       <Link
         href={href}
-        className={cn(buttonVariants({ size: 'lg' }), 'w-full shadow-lift')}
+        className={cn(buttonVariants({ size:'lg'}),'w-full')}
       >
         {label}
       </Link>

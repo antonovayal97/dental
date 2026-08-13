@@ -131,7 +131,7 @@ export function Reviews({
             </span>
 
             {computedAggregate ? (
-              <FadeIn className="mt-8 rounded-2xl border border-border/80 bg-card p-6 shadow-soft">
+              <FadeIn className="mt-8 rounded-2xl border border-border/80 bg-card p-6">
                 <div className="flex items-center gap-2">
                   <p className="text-label">Средняя оценка</p>
                   {usingDemo ? <DemoBadge /> : null}
@@ -155,7 +155,7 @@ export function Reviews({
 
           <div>
             <div
-              className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-6 shadow-soft sm:p-8"
+              className="relative overflow-hidden rounded-2xl border border-border/80 bg-card p-6 sm:p-8"
               aria-live="polite"
               aria-atomic="true"
             >

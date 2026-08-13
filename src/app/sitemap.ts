@@ -19,6 +19,7 @@ const STATIC_ROUTES = [
   '/contacts',
   '/privacy',
   '/terms',
+  '/cookies',
 ] as const
 
 async function safeSlugs(

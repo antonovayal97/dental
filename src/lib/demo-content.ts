@@ -82,6 +82,7 @@ export const DEMO_FOOTER = {
   legalLinks: [
     { label: 'Политика конфиденциальности', href: '/privacy' },
     { label: 'Пользовательское соглашение', href: '/terms' },
+    { label: 'Политика cookie', href: '/cookies' },
   ],
 } as const
 

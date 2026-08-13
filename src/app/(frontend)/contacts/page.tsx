@@ -66,7 +66,7 @@ export default async function ContactsPage() {
       <section className="section-padding">
         <Container className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
           <SlideUp>
-            <div className="space-y-6 rounded-2xl border border-border/80 bg-card p-6 shadow-soft sm:p-8">
+            <div className="space-y-6 rounded-2xl border border-border/80 bg-card p-6 sm:p-8">
               <h2 className="text-subheading">{site.clinicName}</h2>
 
               <div className="space-y-4 text-body">
@@ -132,7 +132,7 @@ export default async function ContactsPage() {
           <SlideUp delay={0.08}>
             <div
               id="appointment"
-              className="rounded-2xl border border-border/80 bg-card p-6 shadow-lift sm:p-8"
+              className="rounded-2xl border border-border/80 bg-card p-6 sm:p-8"
             >
               <h2 className="text-subheading">Запись на консультацию</h2>
               <p className="mt-2 text-caption">
@@ -176,7 +176,7 @@ export default async function ContactsPage() {
                   aria-hidden="true"
                   className="pointer-events-none absolute -right-10 top-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--accent)_20%,transparent),transparent_70%)]"
                 />
-                <div className="relative max-w-lg rounded-2xl border border-border/70 bg-card/90 p-5 shadow-soft backdrop-blur-sm">
+                <div className="relative max-w-lg rounded-2xl border border-border/70 bg-card/90 p-5 backdrop-blur-sm">
                   <p className="text-label text-accent">Адрес</p>
                   <p className="mt-2 text-subheading">{site.clinicName}</p>
                   <p className="mt-2 text-body">

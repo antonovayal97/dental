@@ -11,6 +11,7 @@ const STATIC_PATHS = [
   '/blog',
   '/privacy',
   '/terms',
+  '/cookies',
 ] as const
 
 const DYNAMIC_PATHS = [

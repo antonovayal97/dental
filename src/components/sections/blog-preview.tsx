@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { CardsSwiper } from '@/components/ui/cards-swiper'
 import { Container } from '@/components/ui/container'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -109,14 +110,19 @@ export function BlogPreview({
             description="Мы готовим полезные материалы для пациентов."
           />
         ) : (
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <CardsSwiper
+            className="mt-12"
+            from="md"
+            desktopClassName="gap-5 md:grid-cols-2 lg:grid-cols-3"
+            ariaLabel="Статьи блога"
+          >
             {items.map((article) => (
-              <div key={article.id}>
+              <div key={article.id} className="h-full">
                 <Link
                   href={`/blog/${article.slug}`}
                   className="group block h-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
-                  <Card className="h-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lift">
+                  <Card className="h-full overflow-hidden transition-all duration-300 group-hover:-translate-y-1">
                     <MediaImage
                       media={article.coverImage}
                       alt={article.title}
@@ -158,7 +164,7 @@ export function BlogPreview({
                 </Link>
               </div>
             ))}
-          </div>
+          </CardsSwiper>
         )}
       </Container>
     </section>

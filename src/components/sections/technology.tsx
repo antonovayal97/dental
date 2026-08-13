@@ -13,7 +13,8 @@ import {
   MediaImage,
   type MediaImageSource,
 } from '@/components/shared/media-image'
-import { SlideUp, StaggerChildren, StaggerItem } from '@/components/shared/motion'
+import { SlideUp } from '@/components/shared/motion'
+import { CardsSwiper } from '@/components/ui/cards-swiper'
 import { Container } from '@/components/ui/container'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -77,7 +78,7 @@ export function Technology({
       aria-labelledby="technology-heading"
     >
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div className="grid min-w-0 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div className="lg:sticky lg:top-28 lg:self-start">
             <SectionHeading
               eyebrow={eyebrow}
@@ -90,64 +91,71 @@ export function Technology({
             {usingDemo ? <DemoBadge className="mt-4" /> : null}
           </div>
 
-          <div>
+          <div className="min-w-0">
             {items.length === 0 ? (
               <EmptyState
                 title="Технологии скоро появятся"
                 description="Мы готовим описание оборудования клиники."
               />
             ) : (
-              <SlideUp>
-                <StaggerChildren className="space-y-4">
+              <SlideUp className="min-w-0">
+                <CardsSwiper
+                  from="lg"
+                  layout="stack"
+                  desktopClassName="space-y-4"
+                  slidesPerView={1.15}
+                  ariaLabel="Технологии"
+                >
                   {items.map((item, index) => {
                     const Icon = TECH_ICONS[item.icon ?? ''] ?? ScanLine
                     const isWide = index % 3 === 0
 
                     return (
-                      <StaggerItem key={item.id}>
-                        <article
-                          className={cn(
-                            'overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft',
-                            isWide ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr]' : '',
-                          )}
-                        >
-                          <div className="flex flex-col justify-between p-6 sm:p-8">
-                            <div>
-                              <div className="mb-4 flex items-center gap-3">
-                                <div
-                                  className="flex size-10 items-center justify-center rounded-xl bg-accent-soft text-accent"
-                                  aria-hidden="true"
-                                >
-                                  <Icon className="size-5" />
-                                </div>
-                                {item.isDemo ? <DemoBadge /> : null}
+                      <article
+                        key={item.id}
+                        className={cn(
+                          'flex h-full min-w-0 w-full max-w-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card',
+                          isWide ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr]' : '',
+                        )}
+                      >
+                        <div className="flex min-w-0 flex-col justify-between p-5 sm:p-8">
+                          <div className="min-w-0">
+                            <div className="mb-4 flex items-center gap-3">
+                              <div
+                                className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent"
+                                aria-hidden="true"
+                              >
+                                <Icon className="size-5" />
                               </div>
-                              <h3 className="text-subheading">{item.title}</h3>
-                              <p className="mt-3 text-body text-base sm:text-base">
-                                {item.description}
-                              </p>
+                              {item.isDemo ? <DemoBadge /> : null}
                             </div>
-                            <p className="mt-6 text-label text-accent/80">
-                              {String(index + 1).padStart(2, '0')}
+                            <h3 className="text-subheading break-words">
+                              {item.title}
+                            </h3>
+                            <p className="mt-3 text-body text-base sm:text-base">
+                              {item.description}
                             </p>
                           </div>
+                          <p className="mt-6 text-label text-accent/80">
+                            {String(index + 1).padStart(2, '0')}
+                          </p>
+                        </div>
 
-                          {isWide ? (
-                            <div className="relative min-h-44 border-t border-border/70 lg:min-h-full lg:border-l lg:border-t-0">
-                              <MediaImage
-                                media={item.image}
-                                alt={item.title}
-                                fill
-                                sizes="(max-width: 1024px) 100vw, 30vw"
-                                className="absolute inset-0 h-full min-h-44"
-                              />
-                            </div>
-                          ) : null}
-                        </article>
-                      </StaggerItem>
+                        {isWide ? (
+                          <div className="relative min-h-44 shrink-0 border-t border-border/70 lg:min-h-full lg:border-l lg:border-t-0">
+                            <MediaImage
+                              media={item.image}
+                              alt={item.title}
+                              fill
+                              sizes="(max-width: 1024px) 85vw, 30vw"
+                              className="absolute inset-0 h-full min-h-44"
+                            />
+                          </div>
+                        ) : null}
+                      </article>
                     )
                   })}
-                </StaggerChildren>
+                </CardsSwiper>
               </SlideUp>
             )}
           </div>

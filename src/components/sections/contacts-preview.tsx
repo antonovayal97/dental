@@ -63,7 +63,7 @@ export function ContactsPreview({
     >
       <Container>
         <SlideUp>
-          <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft">
+          <div className="overflow-hidden rounded-2xl border border-border/80 bg-card">
             <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
               <div className="border-b border-border/80 p-6 sm:p-8 lg:border-b-0 lg:border-r">
                 <div className="flex items-center gap-3">

@@ -71,7 +71,7 @@ export function CtaBanner({
           </SlideUp>
 
           <SlideUp delay={0.08}>
-            <div className="rounded-2xl border border-border/80 bg-card p-5 shadow-lift sm:p-7">
+            <div className="rounded-2xl border border-border/80 bg-card p-5 sm:p-7">
               <AppointmentForm services={services} />
             </div>
           </SlideUp>

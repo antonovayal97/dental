@@ -76,7 +76,7 @@ export function PricesTable({ items, className }: PricesTableProps) {
         ))}
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft">
+      <div className="overflow-hidden rounded-2xl border border-border/80 bg-card">
         <div className="hidden grid-cols-[1.2fr_1.6fr_0.8fr_auto] gap-4 border-b border-border/80 bg-muted/50 px-5 py-3 text-caption font-medium text-foreground md:grid">
           <span>Категория</span>
           <span>Услуга</span>

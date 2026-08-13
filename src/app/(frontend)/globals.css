@@ -25,9 +25,6 @@
   --radius-lg: 1.25rem;
   --radius-xl: 1.5rem;
   --radius-2xl: 1.75rem;
-
-  --shadow-soft: 0 1px 2px rgb(23 23 23 / 0.04), 0 8px 24px rgb(23 23 23 / 0.04);
-  --shadow-lift: 0 4px 16px rgb(23 23 23 / 0.06), 0 12px 32px rgb(23 23 23 / 0.04);
 }
 
 :root {
@@ -133,5 +130,16 @@
       linear-gradient(to right, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px),
       linear-gradient(to bottom, color-mix(in srgb, var(--border) 70%, transparent) 1px, transparent 1px);
     background-size: 48px 48px;
+  }
+}
+
+@layer components {
+  .cards-swiper .swiper-slide {
+    height: auto;
+    box-sizing: border-box;
+  }
+
+  .cards-swiper .swiper-slide > * {
+    max-width: 100%;
   }
 }

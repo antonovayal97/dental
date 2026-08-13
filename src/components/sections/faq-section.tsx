@@ -79,7 +79,7 @@ export function FaqSection({
                 description="Раздел FAQ наполняется. Если нужно уточнение — напишите или запишитесь на консультацию."
               />
             ) : (
-              <div className="rounded-2xl border border-border/80 bg-card px-5 shadow-soft sm:px-7">
+              <div className="rounded-2xl border border-border/80 bg-card px-5 sm:px-7">
                 <Accordion
                   items={items.map((item) => ({
                     id: item.id,

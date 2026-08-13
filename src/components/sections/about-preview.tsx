@@ -59,7 +59,7 @@ export function AboutPreview({
             </Link>
           </SlideUp>
 
-          <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-border/80 shadow-soft lg:aspect-[4/5] lg:-translate-y-4">
+          <div className="relative aspect-[5/4] overflow-hidden rounded-2xl border border-border/80 lg:aspect-[4/5] lg:-translate-y-4">
             <MediaImage
               media={image}
               alt="Интерьер клиники"

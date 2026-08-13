@@ -23,8 +23,8 @@ export function DeveloperCredit({ className }: DeveloperCreditProps) {
   return (
     <div
       className={cn(
-        'group inline-flex w-fit max-w-max shrink-0 items-center gap-3 rounded-2xl border border-border/80 bg-gradient-to-r from-muted to-card px-4 py-2.5 shadow-soft transition-all duration-300',
-        'hover:border-accent/35 hover:from-accent-soft/80 hover:to-card hover:shadow-lift',
+        'group inline-flex w-fit max-w-max shrink-0 items-center gap-3 rounded-2xl border border-border/80 bg-gradient-to-r from-muted to-card px-4 py-2.5 transition-all duration-300',
+        'hover:border-accent/35 hover:from-accent-soft/80 hover:to-card',
         className,
       )}
     >

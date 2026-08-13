@@ -10,7 +10,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-import { SlideUp, StaggerChildren, StaggerItem } from '@/components/shared/motion'
+import { SlideUp } from '@/components/shared/motion'
+import { CardsSwiper } from '@/components/ui/cards-swiper'
 import { Container } from '@/components/ui/container'
 import { cn } from '@/lib/utils'
 
@@ -81,11 +82,14 @@ export function TrustBar({ items = DEFAULT_ITEMS, className }: TrustBarProps) {
     >
       <Container className="py-10 sm:py-12">
         <SlideUp>
-          <StaggerChildren className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <CardsSwiper desktopClassName="gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {list.map((item) => {
               const Icon = resolveIcon(item.icon)
               return (
-                <StaggerItem key={item.id}>
+                <div
+                  key={item.id}
+                  className="rounded-2xl border border-border/80 bg-card p-5 sm:border-0 sm:bg-transparent sm:p-0"
+                >
                   <div className="flex gap-4">
                     <div
                       className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-border/80 bg-accent-soft text-accent"
@@ -100,10 +104,10 @@ export function TrustBar({ items = DEFAULT_ITEMS, className }: TrustBarProps) {
                       ) : null}
                     </div>
                   </div>
-                </StaggerItem>
+                </div>
               )
             })}
-          </StaggerChildren>
+          </CardsSwiper>
         </SlideUp>
       </Container>
     </section>

@@ -89,7 +89,7 @@ export function BeforeAfterSlider({
     <figure className={cn('space-y-3', className)}>
       <div
         ref={containerRef}
-        className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-border/80 bg-muted shadow-soft select-none touch-none"
+        className="relative aspect-[16/11] overflow-hidden rounded-2xl border border-border/80 bg-muted select-none touch-none"
         onPointerDown={(event) => {
           dragging.current = true
           event.currentTarget.setPointerCapture?.(event.pointerId)
@@ -119,11 +119,11 @@ export function BeforeAfterSlider({
         </div>
 
         <div
-          className="pointer-events-none absolute inset-y-0 z-10 w-0.5 bg-white shadow-soft"
+          className="pointer-events-none absolute inset-y-0 z-10 w-0.5 bg-white"
           style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
           aria-hidden="true"
         >
-          <div className="absolute top-1/2 left-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-card text-foreground shadow-lift">
+          <div className="absolute top-1/2 left-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/80 bg-card text-foreground">
             <span aria-hidden="true" className="text-xs font-semibold">
               ‖
             </span>

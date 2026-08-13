@@ -7,6 +7,7 @@ import {
   type MediaImageSource,
 } from '@/components/shared/media-image'
 import { buttonVariants } from '@/components/ui/button'
+import { CardsSwiper } from '@/components/ui/cards-swiper'
 import { Container } from '@/components/ui/container'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -115,14 +116,19 @@ export function BeforeAfter({
           />
         ) : (
           <>
-            <div className="mt-12 grid gap-6 lg:grid-cols-2">
+            <CardsSwiper
+              className="mt-12"
+              from="lg"
+              desktopClassName="gap-6 lg:grid-cols-2"
+              ariaLabel="Кейсы до и после"
+            >
               {items.map((item) => (
-                <div key={item.id}>
+                <div key={item.id} className="h-full">
                   <Link
                     href={`/cases/${item.slug}`}
                     className="group block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
-                    <article className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-soft transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lift">
+                    <article className="overflow-hidden rounded-2xl border border-border/80 bg-card transition-all duration-300 group-hover:-translate-y-1">
                       <div className="grid grid-cols-2 gap-px bg-border/80">
                         <figure className="relative aspect-[4/5] bg-muted">
                           <MediaImage
@@ -178,7 +184,7 @@ export function BeforeAfter({
                   </Link>
                 </div>
               ))}
-            </div>
+            </CardsSwiper>
 
             <p className="mt-8 max-w-3xl text-caption">{disclaimer}</p>
           </>

@@ -11,7 +11,8 @@ import {
 } from 'lucide-react'
 
 import { DemoBadge } from '@/components/shared/demo-badge'
-import { SlideUp, StaggerChildren, StaggerItem } from '@/components/shared/motion'
+import { SlideUp } from '@/components/shared/motion'
+import { CardsSwiper } from '@/components/ui/cards-swiper'
 import { Container } from '@/components/ui/container'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SectionHeading } from '@/components/ui/section-heading'
@@ -92,7 +93,10 @@ export function WhyUs({
           />
         ) : (
           <SlideUp className="mt-12">
-            <StaggerChildren className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <CardsSwiper
+              desktopClassName="gap-4 sm:grid-cols-2 lg:grid-cols-4"
+              ariaLabel="Преимущества"
+            >
               {items.map((item, index) => {
                 const Icon =
                   ADVANTAGE_ICONS[item.icon ?? ''] ??
@@ -103,31 +107,30 @@ export function WhyUs({
                     : ''
 
                 return (
-                  <StaggerItem key={item.id}>
-                    <article
-                      className={cn(
-                        'h-full rounded-2xl border border-border/80 bg-card p-6 shadow-soft transition-shadow duration-300 hover:shadow-lift',
-                        asymmetric,
-                      )}
+                  <article
+                    key={item.id}
+                    className={cn(
+                      'h-full rounded-2xl border border-border/80 bg-card p-6',
+                      asymmetric,
+                    )}
+                  >
+                    <div
+                      className="mb-5 flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent"
+                      aria-hidden="true"
                     >
-                      <div
-                        className="mb-5 flex size-11 items-center justify-center rounded-2xl bg-accent-soft text-accent"
-                        aria-hidden="true"
-                      >
-                        <Icon className="size-5" />
-                      </div>
-                      <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-lg font-semibold tracking-tight text-foreground">
-                          {item.title}
-                        </h3>
-                        {item.isDemo ? <DemoBadge /> : null}
-                      </div>
-                      <p className="mt-2 text-caption">{item.description}</p>
-                    </article>
-                  </StaggerItem>
+                      <Icon className="size-5" />
+                    </div>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                        {item.title}
+                      </h3>
+                      {item.isDemo ? <DemoBadge /> : null}
+                    </div>
+                    <p className="mt-2 text-caption">{item.description}</p>
+                  </article>
                 )
               })}
-            </StaggerChildren>
+            </CardsSwiper>
           </SlideUp>
         )}
       </Container>

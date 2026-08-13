@@ -173,7 +173,7 @@ export function CustomSelect({
           aria-labelledby={id}
           tabIndex={-1}
           onKeyDown={handleListKeyDown}
-          className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-border/80 bg-card p-1.5 shadow-lift"
+          className="absolute z-50 mt-2 max-h-60 w-full overflow-auto rounded-xl border border-border/80 bg-card p-1.5"
         >
           {options.map((option, index) => {
             const isSelected = option.value === value

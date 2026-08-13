@@ -12,7 +12,7 @@ export function Toaster() {
       toastOptions={{
         classNames: {
           toast:
-            'border border-border bg-card text-card-foreground shadow-lift rounded-2xl',
+            'border border-border bg-card text-card-foreground rounded-2xl',
           title: 'text-sm font-semibold text-foreground',
           description: 'text-sm text-muted-foreground',
           actionButton:

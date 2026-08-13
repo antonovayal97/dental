@@ -253,7 +253,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                   {stages.map((stage, index) => (
                     <li
                       key={`${stage.title}-${index}`}
-                      className="rounded-2xl border border-border/80 bg-card p-5 shadow-soft"
+                      className="rounded-2xl border border-border/80 bg-card p-5"
                     >
                       <p className="text-label text-accent">Этап {index + 1}</p>
                       <h3 className="mt-2 text-subheading">{stage.title}</h3>
@@ -268,7 +268,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           </div>
 
           <aside className="space-y-8">
-            <div className="rounded-2xl border border-border/80 bg-card p-6 shadow-soft">
+            <div className="rounded-2xl border border-border/80 bg-card p-6">
               <h2 className="text-subheading">Стоимость</h2>
               <p className="mt-3 text-3xl font-semibold tracking-tight">
                 {formatPrice(

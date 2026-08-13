@@ -70,9 +70,9 @@ export function Header({
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-300',
+        'fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300',
         scrolled
-          ? 'border-b border-border/80 bg-background/85 shadow-soft backdrop-blur-xl'
+          ?'border-b border-border/80 bg-background/85 backdrop-blur-xl'
           : 'border-b border-transparent bg-transparent',
       )}
     >

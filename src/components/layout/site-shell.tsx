@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { CookieBanner } from '@/components/layout/cookie-banner'
 import { Footer } from '@/components/layout/footer'
 import { Header } from '@/components/layout/header'
 import { MobileCTA } from '@/components/layout/mobile-cta'
@@ -122,6 +123,7 @@ export async function SiteShell({ children }: SiteShellProps) {
         className="pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0"
       />
       <MobileCTA label={ctaText} phone={phone} services={serviceOptions} />
+      <CookieBanner />
       <Toaster />
     </>
   )
