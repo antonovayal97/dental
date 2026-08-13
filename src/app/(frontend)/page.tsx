@@ -21,9 +21,9 @@ import {
   resolveCaseImages,
   resolveDoctorPhoto,
   resolveServiceImage,
-  resolveTechnologyImage,
   resolveAboutImage,
   mapServiceOptions,
+  resolveTechnologyBlockItems,
   safeGetAdvantages,
   safeGetArticles,
   safeGetCases,
@@ -33,7 +33,6 @@ import {
   safeGetReviews,
   safeGetServices,
   safeGetSiteSettings,
-  safeGetTechnologies,
 } from '@/lib/content'
 import { DEMO_IMAGES } from '@/lib/demo-content'
 import {
@@ -98,7 +97,7 @@ export default async function HomePage() {
     safeGetServices(servicesLimit),
     safeGetDoctors(doctorsLimit),
     safeGetAdvantages(),
-    safeGetTechnologies(),
+    resolveTechnologyBlockItems(home.technology?.items),
     safeGetCases(casesLimit),
     safeGetReviews(reviewsLimit),
     safeGetFAQs(faqsLimit),
@@ -307,15 +306,7 @@ export default async function HomePage() {
             home.technology?.description,
             'Цифровая диагностика и современное оборудование — меньше догадок, больше контроля на каждом этапе.',
           )}
-          technologies={technologiesResult.items.map((item) => ({
-            id: String(item.id),
-            title: String(item.title || 'Технология'),
-            slug: typeof item.slug === 'string' ? item.slug : undefined,
-            description: String(item.description || ''),
-            icon: typeof item.icon === 'string' ? item.icon : null,
-            image: resolveTechnologyImage(item),
-            isDemo: Boolean(item.isDemo) || technologiesResult.isDemo,
-          }))}
+          technologies={technologiesResult.items}
         />
       ) : null}
 

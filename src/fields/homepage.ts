@@ -44,3 +44,45 @@ export const trustBarIconOptions = [
   { label: 'Стерильность', value: 'sterile' },
   { label: 'Цифра', value: 'digital' },
 ]
+
+export const technologyIconOptions = [
+  { label: 'Сканирование', value: 'scan' },
+  { label: 'Микроскоп', value: 'microscope' },
+  { label: 'CAD/CAM', value: 'cadcam' },
+  { label: 'Анестезия', value: 'anesthesia' },
+  { label: 'Стерилизация', value: 'sterilization' },
+  { label: 'Диагностика', value: 'diagnostics' },
+]
+
+/** Карточки блока «Технологии» (главная и «О клинике»). */
+export const technologyItemFields: Field[] = [
+  {
+    name: 'title',
+    type: 'text',
+    label: 'Название',
+    required: true,
+  },
+  {
+    name: 'description',
+    type: 'textarea',
+    label: 'Описание',
+    required: true,
+  },
+  {
+    name: 'icon',
+    type: 'select',
+    label: 'Иконка',
+    required: true,
+    options: technologyIconOptions,
+    defaultValue: 'scan',
+  },
+  {
+    name: 'image',
+    type: 'upload',
+    relationTo: 'media',
+    label: 'Изображение',
+    admin: {
+      description: 'Опциональное фото оборудования',
+    },
+  },
+]

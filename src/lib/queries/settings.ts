@@ -86,7 +86,15 @@ export type HomepageSettingsDoc = Record<string, unknown> & {
   services?: HomepageSectionHeading | null
   whyUs?: HomepageSectionHeading | null
   doctors?: HomepageSectionHeading | null
-  technology?: HomepageSectionHeading | null
+  technology?: (HomepageSectionHeading & {
+    items?: Array<{
+      id?: string
+      title?: string | null
+      description?: string | null
+      icon?: string | null
+      image?: unknown
+    }> | null
+  }) | null
   cases?: HomepageSectionHeading | null
   reviews?: HomepageSectionHeading | null
   about?: {

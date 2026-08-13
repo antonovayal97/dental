@@ -1,14 +1,18 @@
 import type { GlobalConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
-import { sectionHeadingFields, trustBarIconOptions } from '../fields/homepage'
+import {
+  sectionHeadingFields,
+  technologyItemFields,
+  trustBarIconOptions,
+} from '../fields/homepage'
 
 export const HomepageSettings: GlobalConfig = {
   slug: 'homepage-settings',
   label: 'Главная страница',
   admin: {
     description:
-      'Тексты, изображения и видимость блоков главной. Списки услуг/врачей/отзывов редактируются в соответствующих коллекциях.',
+      'Тексты, изображения и видимость блоков главной. Карточки технологий редактируются во вкладке «Технологии». Списки услуг/врачей/отзывов — в соответствующих коллекциях.',
   },
   access: {
     read: anyone,
@@ -271,12 +275,64 @@ export const HomepageSettings: GlobalConfig = {
               name: 'technology',
               type: 'group',
               label: 'Технологии',
-              fields: sectionHeadingFields({
-                eyebrow: 'Технологии',
-                title: 'Технологии, которые помогают лечить точнее',
+              admin: {
                 description:
-                  'Цифровая диагностика и современное оборудование — меньше догадок, больше контроля на каждом этапе.',
-              }),
+                  'Заголовок и карточки общие для главной и страницы «О клинике».',
+              },
+              fields: [
+                ...sectionHeadingFields({
+                  eyebrow: 'Технологии',
+                  title: 'Технологии, которые помогают лечить точнее',
+                  description:
+                    'Цифровая диагностика и современное оборудование — меньше догадок, больше контроля на каждом этапе.',
+                }),
+                {
+                  name: 'items',
+                  type: 'array',
+                  label: 'Карточки',
+                  labels: {
+                    singular: 'Карточка',
+                    plural: 'Карточки',
+                  },
+                  admin: {
+                    description:
+                      'Порядок в списке = порядок на сайте. Один набор для главной и «О клинике».',
+                  },
+                  fields: technologyItemFields,
+                  defaultValue: [
+                    {
+                      title: 'Интраоральный сканер',
+                      description:
+                        'Цифровые слепки без дискомфорта и высокая точность моделей.',
+                      icon: 'scan',
+                    },
+                    {
+                      title: 'Дентальный микроскоп',
+                      description:
+                        'Контроль деталей при эндодонтии и микроинвазивном лечении.',
+                      icon: 'microscope',
+                    },
+                    {
+                      title: 'CAD/CAM',
+                      description:
+                        'Цифровое проектирование и изготовление реставраций.',
+                      icon: 'cadcam',
+                    },
+                    {
+                      title: '3D-диагностика',
+                      description:
+                        'Объёмная визуализация для точного планирования лечения.',
+                      icon: 'diagnostics',
+                    },
+                    {
+                      title: 'Компьютерная анестезия',
+                      description:
+                        'Дозированная подача анестетика для более комфортного приёма.',
+                      icon: 'anesthesia',
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

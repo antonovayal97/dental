@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { technologyIconOptions } from '../fields/homepage'
 import { slugField } from '../fields/slug'
 
 export const Technologies: CollectionConfig = {
@@ -12,7 +13,8 @@ export const Technologies: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'icon', 'order', 'updatedAt'],
-    description: 'Оборудование и технологии клиники',
+    description:
+      'Справочник технологий для привязки к услугам. Карточки блока на главной и «О клинике» редактируются в «Главная страница → Технологии».',
   },
   access: {
     create: authenticated,
@@ -39,14 +41,7 @@ export const Technologies: CollectionConfig = {
       type: 'select',
       label: 'Иконка',
       required: true,
-      options: [
-        { label: 'Сканирование', value: 'scan' },
-        { label: 'Микроскоп', value: 'microscope' },
-        { label: 'CAD/CAM', value: 'cadcam' },
-        { label: 'Анестезия', value: 'anesthesia' },
-        { label: 'Стерилизация', value: 'sterilization' },
-        { label: 'Диагностика', value: 'diagnostics' },
-      ],
+      options: technologyIconOptions,
     },
     {
       name: 'image',

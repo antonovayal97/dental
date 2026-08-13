@@ -371,6 +371,64 @@ export async function safeGetTechnologies(): Promise<{
   }
 }
 
+/** Карточки блока технологий: сначала из настроек главной, иначе коллекция/демо. */
+export async function resolveTechnologyBlockItems(
+  homepageItems?: Array<{
+    id?: string
+    title?: string | null
+    description?: string | null
+    icon?: string | null
+    image?: unknown
+  }> | null,
+): Promise<{
+  items: Array<{
+    id: string
+    title: string
+    slug?: string
+    description: string
+    icon: string | null
+    image: {
+      url?: string | null
+      alt?: string | null
+      width?: number | null
+      height?: number | null
+    } | null
+    isDemo?: boolean
+  }>
+  isDemo: boolean
+}> {
+  const fromHomepage = Array.isArray(homepageItems)
+    ? homepageItems.filter((item) => item?.title)
+    : []
+
+  if (fromHomepage.length > 0) {
+    return {
+      items: fromHomepage.map((item, index) => ({
+        id: String(item.id || `tech-${index}`),
+        title: String(item.title || 'Технология'),
+        description: String(item.description || ''),
+        icon: typeof item.icon === 'string' ? item.icon : null,
+        image: asMedia(item.image),
+      })),
+      isDemo: false,
+    }
+  }
+
+  const fallback = await safeGetTechnologies()
+  return {
+    items: fallback.items.map((item) => ({
+      id: String(item.id),
+      title: String(item.title || 'Технология'),
+      slug: typeof item.slug === 'string' ? item.slug : undefined,
+      description: String(item.description || ''),
+      icon: typeof item.icon === 'string' ? item.icon : null,
+      image: resolveTechnologyImage(item),
+      isDemo: Boolean(item.isDemo) || fallback.isDemo,
+    })),
+    isDemo: fallback.isDemo,
+  }
+}
+
 export async function safeGetFAQs(limit = 20): Promise<{
   items: Array<FAQDoc & { isDemo?: boolean }>
   isDemo: boolean

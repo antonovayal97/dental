@@ -406,7 +406,7 @@ export interface ServiceCategory {
   createdAt: string;
 }
 /**
- * Оборудование и технологии клиники
+ * Справочник технологий для привязки к услугам. Карточки блока на главной и «О клинике» редактируются в «Главная страница → Технологии».
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "technologies".
@@ -1301,7 +1301,7 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Тексты, изображения и видимость блоков главной. Списки услуг/врачей/отзывов редактируются в соответствующих коллекциях.
+ * Тексты, изображения и видимость блоков главной. Карточки технологий редактируются во вкладке «Технологии». Списки услуг/врачей/отзывов — в соответствующих коллекциях.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage-settings".
@@ -1361,11 +1361,29 @@ export interface HomepageSetting {
     description?: string | null;
     limit?: number | null;
   };
+  /**
+   * Заголовок и карточки общие для главной и страницы «О клинике».
+   */
   technology?: {
     enabled?: boolean | null;
     eyebrow?: string | null;
     title?: string | null;
     description?: string | null;
+    /**
+     * Порядок в списке = порядок на сайте. Один набор для главной и «О клинике».
+     */
+    items?:
+      | {
+          title: string;
+          description: string;
+          icon: 'scan' | 'microscope' | 'cadcam' | 'anesthesia' | 'sterilization' | 'diagnostics';
+          /**
+           * Опциональное фото оборудования
+           */
+          image?: (string | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
   };
   cases?: {
     enabled?: boolean | null;
@@ -1630,6 +1648,15 @@ export interface HomepageSettingsSelect<T extends boolean = true> {
         eyebrow?: T;
         title?: T;
         description?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              icon?: T;
+              image?: T;
+              id?: T;
+            };
       };
   cases?:
     | T

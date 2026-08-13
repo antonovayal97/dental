@@ -5,10 +5,10 @@ import { DemoBadge } from '@/components/shared/demo-badge'
 import {
   getDemoAbout,
   resolveDoctorPhoto,
-  resolveTechnologyImage,
+  resolveTechnologyBlockItems,
   safeGetDoctors,
+  safeGetHomepageSettings,
   safeGetPageBySlug,
-  safeGetTechnologies,
 } from '@/lib/content'
 import { Breadcrumbs } from '@/components/ui/breadcrumbs'
 import { buttonVariants } from '@/components/ui/button'
@@ -16,6 +16,14 @@ import { Container } from '@/components/ui/container'
 import { SectionHeading } from '@/components/ui/section-heading'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { cn } from '@/lib/utils'
+
+function textOr(
+  value: string | null | undefined,
+  fallback: string,
+): string {
+  const trimmed = value?.trim()
+  return trimmed ? trimmed : fallback
+}
 
 export async function generateMetadata() {
   const { item } = await safeGetPageBySlug('about')
@@ -34,11 +42,16 @@ export async function generateMetadata() {
 }
 
 export default async function AboutPage() {
-  const [pageResult, doctorsResult, technologiesResult] = await Promise.all([
+  const [pageResult, doctorsResult, homeResult] = await Promise.all([
     safeGetPageBySlug('about'),
     safeGetDoctors(6),
-    safeGetTechnologies(),
+    safeGetHomepageSettings(),
   ])
+
+  const technology = homeResult.data.technology
+  const technologiesResult = await resolveTechnologyBlockItems(
+    technology?.items,
+  )
 
   const demo = getDemoAbout()
   const title = pageResult.item?.title || demo.title
@@ -139,19 +152,18 @@ export default async function AboutPage() {
         description="Короткое знакомство с врачами — подробности в профилях."
       />
 
-      <div id="technologies">
-        <Technology
-          technologies={technologiesResult.items.map((item) => ({
-            id: String(item.id),
-            title: String(item.title || 'Технология'),
-            slug: typeof item.slug === 'string' ? item.slug : undefined,
-            description: String(item.description || ''),
-            icon: typeof item.icon === 'string' ? item.icon : null,
-            image: resolveTechnologyImage(item),
-            isDemo: Boolean(item.isDemo) || technologiesResult.isDemo,
-          }))}
-        />
-      </div>
+      <Technology
+        eyebrow={textOr(technology?.eyebrow, 'Технологии')}
+        title={textOr(
+          technology?.title,
+          'Технологии, которые помогают лечить точнее',
+        )}
+        description={textOr(
+          technology?.description,
+          'Цифровая диагностика и современное оборудование — меньше догадок, больше контроля на каждом этапе.',
+        )}
+        technologies={technologiesResult.items}
+      />
 
       <CtaBanner title="Приходите на консультацию" />
     </>
